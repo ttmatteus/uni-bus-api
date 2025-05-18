@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Linha } from './linha.entity';
@@ -25,9 +25,15 @@ export class LinhaService {
     }
 
     async create(createLinhaDto: CreateLinhaDto): Promise<Linha> {
-        const linha = this.linhaRepository.create(createLinhaDto);
-        return this.linhaRepository.save(linha);
+    const exists = await this.linhaRepository.findOneBy({ nome: createLinhaDto.nome });
+    if (exists) {
+        throw new BadRequestException(`Já existe uma linha com o nome "${createLinhaDto.nome}".`);
     }
+
+    const linha = this.linhaRepository.create(createLinhaDto);
+    return this.linhaRepository.save(linha);
+    }
+
 
     async update(id: number, updateLinhaDto: UpdateLinhaDto): Promise<Linha> {
         const linha = await this.findOne(id);
