@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
+
 import databaseConfig from './config/database.config';
 import { LinhaModule } from './linha/linha.module';
 import { RotaModule } from './rota/rota.module';
 import { OnibusModule } from './onibus/onibus.module';
-import { SimuladorModule } from './simulador/simulador.module';
 import { AuthModule } from './auth/auth.module';
+import { CronJobService } from './cron-job.service';
 
 @Module({
   imports: [
@@ -17,11 +19,16 @@ import { AuthModule } from './auth/auth.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (config: ConfigService): TypeOrmModuleOptions => {
-      return config.get<TypeOrmModuleOptions>('database')!;
-    },
+        return config.get<TypeOrmModuleOptions>('database')!;
+      },
       inject: [ConfigService],
     }),
-    LinhaModule, RotaModule, OnibusModule, SimuladorModule, AuthModule
+    ScheduleModule.forRoot(), 
+    LinhaModule,
+    RotaModule,
+    OnibusModule,
+    AuthModule,
   ],
+   providers: [CronJobService],
 })
 export class AppModule {}
