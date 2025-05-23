@@ -1,6 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-
 @Entity()
 export class Linha {
     @PrimaryGeneratedColumn()
@@ -17,4 +16,7 @@ export class Linha {
 
     @Column()
     tipo: string;
+
+    @Column()
+    turno: string;
 }
