@@ -7,8 +7,9 @@ import databaseConfig from './config/database.config';
 import { LinhaModule } from './linha/linha.module';
 import { RotaModule } from './rota/rota.module';
 import { OnibusModule } from './onibus/onibus.module';
-import { AuthModule } from './auth/auth.module';
 import { CronJobService } from './cron-job.service';
+import { UserModule } from './user/user.module';
+import { FavoritoModule } from './favorito/favorito.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { CronJobService } from './cron-job.service';
     LinhaModule,
     RotaModule,
     OnibusModule,
-    AuthModule,
+    UserModule,
+    FavoritoModule,
   ],
    providers: [CronJobService],
 })
