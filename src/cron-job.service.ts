@@ -9,7 +9,7 @@ export class CronJobService {
   @Cron('*/30 * * * * *') 
   async pingAPI() {
     try {
-      const res = await axios.get('http://localhost:3000/linha'); 
+      const res = await axios.get('https://uni-bus-api.onrender.com/linha'); 
       this.logger.log(`Ping feito com status: ${res.status}`);
     } catch (error) {
       this.logger.error(`Erro ao pingar a API: ${error.message}`);
