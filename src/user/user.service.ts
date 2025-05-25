@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./user.entity";
 import { Repository } from "typeorm";
@@ -25,5 +25,15 @@ export class UserService {
 
     findByMatricula(matricula: string) {
         return this.repo.findOneBy({ matricula });
+    }
+
+    async login(matricula: string) {
+        const user = await this.findByMatricula(matricula);
+        if (!user) {
+            throw new NotFoundException('Usuário não encontrado com essa matrícula');
+        }
+
+        // Aqui você pode retornar um token, sessão ou apenas o usuário
+        return user;
     }
 }
