@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class Linha {
@@ -15,8 +15,11 @@ export class Linha {
     campus: string;
 
     @Column()
-    tipo: string;
+    turno: string;
 
     @Column()
-    turno: string;
+    tipo: string;
+
+    @Column('simple-array', { nullable: true })
+    horarios?: string[];
 }

@@ -33,7 +33,6 @@ export class UserService {
             throw new NotFoundException('Usuário não encontrado com essa matrícula');
         }
 
-        // Aqui você pode retornar um token, sessão ou apenas o usuário
         return user;
     }
 }

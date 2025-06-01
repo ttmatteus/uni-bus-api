@@ -25,18 +25,27 @@ export class LinhaService {
     }
 
     async create(createLinhaDto: CreateLinhaDto): Promise<Linha> {
-    const exists = await this.linhaRepository.findOneBy({ nome: createLinhaDto.nome });
-    if (exists) {
-        throw new BadRequestException(`Já existe uma linha com o nome "${createLinhaDto.nome}".`);
-    }
+        const exists = await this.linhaRepository.findOneBy({ nome: createLinhaDto.nome });
+        if (exists) {
+            throw new BadRequestException(`Já existe uma linha com o nome "${createLinhaDto.nome}".`);
+        }
 
-    const linha = this.linhaRepository.create(createLinhaDto);
-    return this.linhaRepository.save(linha);
-    }
+        if (createLinhaDto.horarios) {
+            createLinhaDto.horarios = createLinhaDto.horarios.sort();
+        }
 
+        const linha = this.linhaRepository.create(createLinhaDto);
+        return this.linhaRepository.save(linha);
+    }
 
     async update(id: number, updateLinhaDto: UpdateLinhaDto): Promise<Linha> {
         const linha = await this.findOne(id);
+
+
+        if (updateLinhaDto.horarios) {
+            updateLinhaDto.horarios = updateLinhaDto.horarios.sort();
+        }
+
         Object.assign(linha, updateLinhaDto);
         return this.linhaRepository.save(linha);
     }
